@@ -115,84 +115,6 @@
                           className: h,
                           children: "Compliance",
                         }),
-                        (0, n.jsxs)("div", {
-                          ref: x,
-                          className: "relative",
-                          children: [
-                            (0, n.jsxs)("button", {
-                              type: "button",
-                              className: "inline-flex items-center gap-1 "
-                                .concat(h, " ")
-                                .concat(e ? "text-rh-green" : ""),
-                              "aria-expanded": e,
-                              "aria-haspopup": "true",
-                              onClick: () => t((e) => !e),
-                              children: [
-                                "Docs",
-                                (0, n.jsx)("svg", {
-                                  viewBox: "0 0 24 24",
-                                  width: "14",
-                                  height: "14",
-                                  fill: "none",
-                                  stroke: "currentColor",
-                                  strokeWidth: "2",
-                                  "aria-hidden": "true",
-                                  className: "transition-transform ".concat(
-                                    e ? "rotate-180" : ""
-                                  ),
-                                  children: (0, n.jsx)("path", {
-                                    d: "m6 9 6 6 6-6",
-                                    strokeLinecap: "round",
-                                    strokeLinejoin: "round",
-                                  }),
-                                }),
-                              ],
-                            }),
-                            e &&
-                              (0, n.jsx)("div", {
-                                className:
-                                  "absolute right-1/2 top-full z-40 mt-3 w-[19rem] translate-x-1/2 rounded-2xl border border-line bg-ink-2 p-2 shadow-2xl shadow-black/60",
-                                children: (0, n.jsx)("ul", {
-                                  children: c.map((e) =>
-                                    (0, n.jsx)(
-                                      "li",
-                                      {
-                                        children: (0, n.jsxs)(i(), {
-                                          href: e.href,
-                                          onClick: () => t(!1),
-                                          className:
-                                            "block rounded-xl px-3 py-2 transition hover:bg-ink-3",
-                                          children: [
-                                            (0, n.jsx)("span", {
-                                              className:
-                                                "block text-sm font-medium text-fg",
-                                              children: e.label,
-                                            }),
-                                            (0, n.jsx)("span", {
-                                              className:
-                                                "block text-xs text-fg-muted",
-                                              children: e.hint,
-                                            }),
-                                          ],
-                                        }),
-                                      },
-                                      e.href
-                                    )
-                                  ),
-                                }),
-                              }),
-                          ],
-                        }),
-                        (0, n.jsx)(i(), {
-                          href: "/roadmap",
-                          className: h,
-                          children: "Roadmap",
-                        }),
-                        (0, n.jsx)(i(), {
-                          href: "/token",
-                          className: h,
-                          children: "$PRIVE",
-                        }),
                       ],
                     }),
                     (0, n.jsxs)("ul", {
@@ -294,20 +216,6 @@
                             "block rounded-lg px-2 py-2 text-sm text-fg-muted transition hover:bg-ink-3 hover:text-fg",
                           children: "Compliance",
                         }),
-                        (0, n.jsx)(i(), {
-                          href: "/roadmap",
-                          onClick: () => a(!1),
-                          className:
-                            "block rounded-lg px-2 py-2 text-sm text-fg-muted transition hover:bg-ink-3 hover:text-fg",
-                          children: "Roadmap",
-                        }),
-                        (0, n.jsx)(i(), {
-                          href: "/token",
-                          onClick: () => a(!1),
-                          className:
-                            "block rounded-lg px-2 py-2 text-sm text-fg-muted transition hover:bg-ink-3 hover:text-fg",
-                          children: "$PRIVE",
-                        }),
                         d
                           ? (0, n.jsx)("a", {
                               href: d,
@@ -319,24 +227,6 @@
                               children: "Buy $PRIVE",
                             })
                           : null,
-                        (0, n.jsx)("p", {
-                          className:
-                            "px-2 pb-1 pt-3 text-[0.65rem] font-semibold uppercase tracking-wider text-fg-muted",
-                          children: "Docs",
-                        }),
-                        c.map((e) =>
-                          (0, n.jsx)(
-                            i(),
-                            {
-                              href: e.href,
-                              onClick: () => a(!1),
-                              className:
-                                "block rounded-lg px-2 py-2 text-sm text-fg-muted transition hover:bg-ink-3 hover:text-fg",
-                              children: e.label,
-                            },
-                            e.href
-                          )
-                        ),
                         (0, n.jsxs)("a", {
                           href: "https://x.com/privepay_rh",
                           target: "_blank",

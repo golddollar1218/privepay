@@ -16,7 +16,36 @@
         c = n(5491);
       let l = "text-fg-muted transition hover:text-rh-green";
       function d() {
-        return null;
+        return (0, i.jsx)("footer", {
+          className: "border-t border-line bg-ink-2",
+          children: (0, i.jsxs)("div", {
+            className:
+              "mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6",
+            children: [
+              (0, i.jsx)(s.A, {}),
+              (0, i.jsxs)("p", {
+                className: "text-center text-sm text-fg-muted sm:text-right",
+                children: [
+                  "Built on",
+                  " ",
+                  (0, i.jsx)("a", {
+                    className:
+                      "font-medium text-rh-green transition hover:text-rh-green-hover",
+                    href: "https://docs.robinhood.com/chain/",
+                    target: "_blank",
+                    rel: "noopener noreferrer",
+                    children: "Robinhood Chain",
+                  }),
+                  (0, i.jsx)("span", {
+                    className: "text-fg-muted/50",
+                    children: " \xb7 ",
+                  }),
+                  "\xa9 2026 Priv\xe9",
+                ],
+              }),
+            ],
+          }),
+        });
       }
       function u(e) {
         let { children: t } = e;
