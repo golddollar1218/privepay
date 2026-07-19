@@ -1,0 +1,1133 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Privé · console</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        color-scheme: dark;
+        /* accent: Robinhood lime neon. --base-700 is the LIGHTER lime: it is used both as the
+       primary-button hover fill and as accent text on dark tints, so it must read bright. */
+        --base: #dfff00;
+        --base-700: #e9ff4d;
+        --base-tint: #232d0d;
+        --ink: #eaf3f0;
+        --ink-2: #b8c6c1;
+        --ink-3: #859a95;
+        --bg: #06090a;
+        --panel: #111a1b;
+        --line: #1e2a29;
+        --line-2: #16201f;
+        --pos: #3ed8a3;
+        --pos-bg: #0d2a22;
+        --warn: #f0c86b;
+        --warn-bg: #2a2210;
+        --neut-bg: #1a2422;
+        --mono: "IBM Plex Mono", ui-monospace, monospace;
+        --sans: "Hanken Grotesk", system-ui, sans-serif;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: var(--sans);
+        color: var(--ink);
+        background: var(--bg);
+        font-size: 14px;
+        line-height: 1.45;
+        -webkit-font-smoothing: antialiased;
+      }
+      .mono {
+        font-family: var(--mono);
+        font-variant-numeric: tabular-nums;
+      }
+      a {
+        color: var(--base);
+        text-decoration: none;
+      }
+      button {
+        font-family: inherit;
+      }
+
+      .app {
+        display: grid;
+        grid-template-columns: 236px 1fr;
+        min-height: 100vh;
+      }
+
+      /* sidebar */
+      .side {
+        background: var(--panel);
+        border-right: 1px solid var(--line);
+        display: flex;
+        flex-direction: column;
+        position: sticky;
+        top: 0;
+        height: 100vh;
+      }
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 18px 18px 14px;
+      }
+      .brandlink {
+        display: inline-flex;
+        align-items: center;
+        gap: 9px;
+        color: inherit;
+        text-decoration: none;
+      }
+      .brandlink:hover b {
+        color: var(--base-700);
+      }
+      .brand .m {
+        width: 26px;
+        height: 26px;
+        border-radius: 7px;
+        background: url(/logo.png) center/cover no-repeat;
+        position: relative;
+      }
+      .brand .m::before {
+        content: none;
+      }
+      .brand b {
+        font-weight: 700;
+        font-size: 16px;
+        letter-spacing: -0.01em;
+      }
+      .brand .env {
+        margin-left: auto;
+        font: 500 10px var(--mono);
+        color: var(--ink-3);
+        border: 1px solid var(--line);
+        padding: 2px 6px;
+        border-radius: 5px;
+      }
+      .navg {
+        padding: 8px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 1px;
+      }
+      .navg .lbl {
+        font: 600 10.5px var(--sans);
+        letter-spacing: 0.07em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        padding: 14px 10px 6px;
+      }
+      .nav {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 10px;
+        border-radius: 8px;
+        color: var(--ink-2);
+        font-weight: 500;
+        cursor: pointer;
+        border: none;
+        background: none;
+        width: 100%;
+        text-align: left;
+        font-size: 13.5px;
+      }
+      .nav svg {
+        width: 16px;
+        height: 16px;
+        stroke: currentColor;
+        stroke-width: 1.6;
+        fill: none;
+        opacity: 0.9;
+      }
+      .nav:hover {
+        background: var(--line-2);
+        color: var(--ink);
+      }
+      .nav.active {
+        background: var(--base-tint);
+        color: var(--base-700);
+      }
+      .nav.active svg {
+        opacity: 1;
+      }
+      .nav .kbd {
+        margin-left: auto;
+        font: 500 10px var(--mono);
+        color: var(--ink-3);
+        border: 1px solid var(--line);
+        border-radius: 4px;
+        padding: 1px 5px;
+      }
+      .side .grow {
+        flex: 1;
+      }
+      .poolcard {
+        margin: 12px;
+        border: 1px solid var(--line);
+        border-radius: 10px;
+        padding: 11px 12px;
+        background: var(--bg);
+      }
+      .poolcard .t {
+        font-size: 11px;
+        color: var(--ink-2);
+        display: flex;
+        justify-content: space-between;
+      }
+      .poolcard .n {
+        font: 600 15px var(--mono);
+        margin-top: 3px;
+      }
+      .poolcard .ok {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font: 500 11px var(--sans);
+        color: var(--pos);
+        margin-top: 7px;
+      }
+      .poolcard .ok i {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--pos);
+      }
+      .acct {
+        display: flex;
+        align-items: center;
+        gap: 9px;
+        padding: 12px 14px;
+        border-top: 1px solid var(--line);
+      }
+      .acct .av {
+        width: 28px;
+        height: 28px;
+        border-radius: 7px;
+        background: var(--neut-bg);
+        border: 1px solid var(--line);
+        display: grid;
+        place-items: center;
+        font: 600 11px var(--mono);
+        color: var(--ink-2);
+      }
+      .acct .who {
+        font: 500 12px var(--mono);
+      }
+      .acct .who small {
+        display: block;
+        font: 500 10.5px var(--sans);
+        color: var(--ink-3);
+      }
+
+      /* main */
+      .main {
+        min-width: 0;
+      }
+      .top {
+        height: 60px;
+        border-bottom: 1px solid var(--line);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 24px;
+        position: sticky;
+        top: 0;
+        background: rgba(11, 16, 18, 0.82);
+        backdrop-filter: blur(8px);
+        z-index: 5;
+      }
+      .top h1 {
+        font-size: 16px;
+        font-weight: 600;
+        margin: 0;
+        letter-spacing: -0.01em;
+      }
+      .top .crumb {
+        color: var(--ink-3);
+        font-size: 12.5px;
+        margin-left: 2px;
+      }
+      .top-right {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .net {
+        display: inline-flex;
+        align-items: center;
+        gap: 7px;
+        font: 500 12.5px var(--sans);
+        color: var(--ink-2);
+        border: 1px solid var(--line);
+        background: var(--panel);
+        padding: 6px 11px;
+        border-radius: 8px;
+      }
+      .net .d {
+        width: 7px;
+        height: 7px;
+        border-radius: 50%;
+        background: var(--base);
+        box-shadow: 0 0 6px rgba(223, 255, 0, 0.55);
+      }
+      .addr {
+        font: 500 12.5px var(--mono);
+        color: var(--ink);
+        border: 1px solid var(--line);
+        background: var(--panel);
+        padding: 6px 11px;
+        border-radius: 8px;
+      }
+      .view {
+        padding: 22px 24px 60px;
+        max-width: 1080px;
+      }
+      .view[hidden] {
+        display: none;
+      }
+
+      /* metric row (data, not marketing) */
+      .metrics {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 1px;
+        background: var(--line);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+        margin-bottom: 22px;
+      }
+      .metric {
+        background: var(--panel);
+        padding: 13px 16px 12px;
+      }
+      .metric .k {
+        font-size: 12px;
+        color: var(--ink-2);
+      }
+      .metric .v {
+        font: 600 23px var(--mono);
+        letter-spacing: -0.02em;
+        margin-top: 6px;
+      }
+      .metric .d {
+        font-size: 11.5px;
+        margin-top: 4px;
+        color: var(--ink-3);
+      }
+      .metric .d .up {
+        color: var(--pos);
+        font-family: var(--mono);
+      }
+
+      .sec {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin: 24px 0 11px;
+      }
+      .sec h2 {
+        font-size: 13.5px;
+        font-weight: 600;
+        margin: 0;
+      }
+      .sec a.link {
+        font-size: 12.5px;
+        font-weight: 500;
+      }
+
+      /* tables */
+      .tbl {
+        width: 100%;
+        border-collapse: collapse;
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        overflow: hidden;
+      }
+      .tbl thead th {
+        font: 600 11px var(--sans);
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+        text-align: left;
+        padding: 11px 16px;
+        border-bottom: 1px solid var(--line);
+        background: var(--bg);
+      }
+      .tbl td {
+        padding: 10px 16px;
+        border-bottom: 1px solid var(--line-2);
+        font-size: 13.5px;
+        vertical-align: middle;
+      }
+      .tbl tr:last-child td {
+        border-bottom: none;
+      }
+      .tbl tbody tr:hover {
+        background: rgba(223, 255, 0, 0.05);
+      }
+      .tbl td.num,
+      .tbl th.num {
+        text-align: right;
+      }
+      .id {
+        font: 500 12.5px var(--mono);
+        color: var(--ink-2);
+      }
+      .amt {
+        font: 600 13.5px var(--mono);
+        letter-spacing: -0.01em;
+      }
+      .muted {
+        color: var(--ink-3);
+      }
+      .tx {
+        font: 500 12.5px var(--mono);
+        color: var(--base);
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+      }
+
+      /* status tags */
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        font: 500 11.5px var(--sans);
+        padding: 3px 9px;
+        border-radius: 6px;
+        border: 1px solid transparent;
+      }
+      .tag.pool {
+        color: var(--base-700);
+        background: var(--base-tint);
+        border-color: rgba(223, 255, 0, 0.28);
+      }
+      .tag.done {
+        color: var(--ink-2);
+        background: var(--neut-bg);
+        border-color: var(--line);
+      }
+      .tag.ok {
+        color: var(--pos);
+        background: var(--pos-bg);
+        border-color: #1c463a;
+      }
+      .tag::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: currentColor;
+        opacity: 0.7;
+      }
+
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 7px;
+        font: 600 13px var(--sans);
+        border: 1px solid var(--line);
+        background: var(--panel);
+        color: var(--ink);
+        border-radius: 8px;
+        padding: 8px 13px;
+        cursor: pointer;
+      }
+      .btn:hover {
+        border-color: #2e3d3b;
+      }
+      /* lime is a BACKGROUND here, so the label must be near-black, never white */
+      .btn.pri {
+        background: var(--base);
+        border-color: var(--base);
+        color: var(--bg);
+      }
+      .btn.pri:hover {
+        background: var(--base-700);
+        border-color: var(--base-700);
+      }
+      .btn.sm {
+        padding: 5px 11px;
+        font-size: 12.5px;
+      }
+
+      /* compose forms */
+      .compose {
+        display: grid;
+        grid-template-columns: 1fr 320px;
+        gap: 20px;
+        align-items: start;
+      }
+      .form {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 20px;
+      }
+      .form h3 {
+        margin: 0 0 16px;
+        font-size: 14px;
+        font-weight: 600;
+      }
+      .lab {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--ink-2);
+        display: block;
+        margin: 0 0 6px;
+      }
+      .field {
+        display: flex;
+        align-items: center;
+        border: 1px solid var(--line);
+        border-radius: 9px;
+        background: #0b1012;
+        padding: 0 12px;
+        margin-bottom: 14px;
+      }
+      .field input {
+        border: none;
+        outline: none;
+        background: none;
+        font: 600 16px var(--mono);
+        color: var(--ink);
+        padding: 12px 0;
+        width: 100%;
+      }
+      .field .suffix {
+        font: 600 13px var(--sans);
+        color: var(--ink-2);
+        white-space: nowrap;
+      }
+      .field.lg input {
+        font-size: 26px;
+      }
+      .summary {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 18px;
+      }
+      .summary h3 {
+        margin: 0 0 12px;
+        font: 500 10.5px var(--mono);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--ink-3);
+      }
+      .srow {
+        display: flex;
+        justify-content: space-between;
+        padding: 8px 0;
+        border-bottom: 1px solid var(--line-2);
+        font-size: 13px;
+      }
+      .srow:last-of-type {
+        border-bottom: none;
+      }
+      .srow b {
+        font-family: var(--mono);
+        font-weight: 600;
+      }
+      .hint {
+        font-size: 12px;
+        color: var(--ink-2);
+        background: var(--warn-bg);
+        border: 1px solid #3d3117;
+        color: var(--warn);
+        border-radius: 8px;
+        padding: 10px 12px;
+        margin-top: 8px;
+        display: flex;
+        gap: 8px;
+      }
+      .proofline {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font: 500 12.5px var(--mono);
+        color: var(--ink-2);
+        margin: 6px 0 14px;
+      }
+      .proofline .bar {
+        flex: 1;
+        height: 5px;
+        border-radius: 4px;
+        background: var(--line);
+        overflow: hidden;
+      }
+      .proofline .bar i {
+        display: block;
+        height: 100%;
+        width: 64%;
+        background: var(--base);
+        border-radius: 4px;
+        animation: pl 2.4s ease-in-out infinite;
+      }
+      @keyframes pl {
+        0% {
+          width: 10%;
+        }
+        70% {
+          width: 92%;
+        }
+        100% {
+          width: 10%;
+        }
+      }
+
+      .empty {
+        color: var(--ink-3);
+        font-size: 13px;
+        padding: 30px;
+        text-align: center;
+        border: 1px dashed var(--line);
+        border-radius: 12px;
+      }
+      /* typed activity rows (direction-encoded) */
+      .typ {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        font-weight: 500;
+      }
+      .typ .ar {
+        width: 18px;
+        height: 18px;
+        border-radius: 5px;
+        display: grid;
+        place-items: center;
+        font: 600 12px var(--mono);
+        line-height: 1;
+      }
+      .typ.in .ar {
+        background: var(--base-tint);
+        color: var(--base-700);
+      }
+      .typ.out .ar {
+        background: var(--neut-bg);
+        color: var(--ink-2);
+      }
+      /* zk proof step readout */
+      .proofline .step {
+        color: var(--base-700);
+        min-width: 120px;
+        text-align: right;
+      }
+      .rcpt {
+        font: 500 12px var(--mono);
+        color: var(--ink-3);
+      }
+      /* nullifier tombstone: a spent note is cryptographically dead, strike the hash */
+      tr.spent td {
+        color: var(--ink-3);
+      }
+      tr.spent .id {
+        position: relative;
+        color: var(--ink-2);
+      }
+      tr.spent .id::after {
+        content: "";
+        position: absolute;
+        left: 0;
+        right: auto;
+        top: 50%;
+        height: 1px;
+        background: var(--ink-3);
+        width: 0;
+      }
+      tr.spent.reveal .id::after {
+        width: 100%;
+        transition: width 0.45s ease-out;
+      }
+      @media (max-width: 920px) {
+        .app {
+          grid-template-columns: 1fr;
+        }
+        .side {
+          display: none;
+        }
+        .compose {
+          grid-template-columns: 1fr;
+        }
+        .metrics {
+          grid-template-columns: 1fr;
+        }
+      }
+      /* demo-data banner: this is a UI mockup, not live on-chain data */
+      .demobar {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        padding: 6px 14px;
+        background: var(--warn-bg);
+        color: var(--warn);
+        font: 600 12px var(--sans);
+        border-bottom: 1px solid #3d3117;
+        text-align: center;
+      }
+      .demobar b {
+        font-weight: 700;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="demobar">
+      <b>Demo data</b>: interface preview only. Figures shown are mock values,
+      not real balances or on-chain state.
+    </div>
+    <div class="app">
+      <!-- sidebar -->
+      <aside class="side">
+        <div class="brand">
+          <a class="brandlink" href="/" target="_top" title="Back to homepage"
+            ><span class="m"></span><b>Privé</b></a
+          ><span class="env">v0 · testnet</span>
+        </div>
+        <nav class="navg">
+          <button class="nav active" data-view="overview" data-title="Overview">
+            <svg viewBox="0 0 24 24">
+              <path
+                d="M3 13h8V3H3zM13 21h8V11h-8zM13 3v6h8V3zM3 21h8v-4H3z"
+              /></svg
+            >Overview<span class="kbd">O</span>
+          </button>
+          <span class="lbl">Move funds</span>
+          <button class="nav" data-view="deposit" data-title="Deposit">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 4v12m0 0 4-4m-4 4-4-4M5 20h14" /></svg
+            >Deposit<span class="kbd">D</span>
+          </button>
+          <button class="nav" data-view="withdraw" data-title="Withdraw">
+            <svg viewBox="0 0 24 24">
+              <path d="M12 20V8m0 0 4 4m-4-4-4 4M5 4h14" /></svg
+            >Withdraw<span class="kbd">W</span>
+          </button>
+          <span class="lbl">Records</span>
+          <button class="nav" data-view="notes" data-title="Notes">
+            <svg viewBox="0 0 24 24">
+              <path d="M6 3h9l5 5v13H6zM15 3v5h5M9 13h7M9 17h7" /></svg
+            >Notes<span class="kbd">N</span>
+          </button>
+          <button class="nav" data-view="activity" data-title="Activity">
+            <svg viewBox="0 0 24 24"><path d="M3 12h4l2 7 4-16 2 9h6" /></svg
+            >Activity<span class="kbd">A</span>
+          </button>
+        </nav>
+        <div class="grow"></div>
+        <div class="poolcard">
+          <div class="t">
+            <span>USDG pool · demo</span><span class="mono">#84532</span>
+          </div>
+          <div class="n">
+            $4,712,900<span
+              style="
+                font: 500 10px var(--sans);
+                color: var(--ink-3);
+                margin-left: 6px;
+              "
+              >mock</span
+            >
+          </div>
+          <div class="ok"><i></i>ASP screened · root current</div>
+        </div>
+        <div class="acct">
+          <span class="av">9F</span>
+          <span class="who">0x9f3a…2b<small>Robinhood testnet</small></span>
+        </div>
+      </aside>
+
+      <!-- main -->
+      <div class="main">
+        <header class="top">
+          <h1 id="ptitle">Overview <span class="crumb" id="pcrumb"></span></h1>
+          <div class="top-right">
+            <a class="btn sm" href="/" target="_top" title="Back to homepage"
+              >← Back to site</a
+            >
+            <span class="net"><span class="d"></span>Robinhood testnet</span>
+          </div>
+        </header>
+
+        <!-- OVERVIEW -->
+        <section class="view" id="overview">
+          <div class="metrics">
+            <div class="metric">
+              <div class="k">Your private balance</div>
+              <div class="v">1,250.00</div>
+              <div class="d">USDG across 2 notes</div>
+            </div>
+            <div class="metric">
+              <div class="k">Anonymity set</div>
+              <div class="v">1,284</div>
+              <div class="d"><span class="up">+41</span> last 24h</div>
+            </div>
+            <div class="metric">
+              <div class="k">ASP root</div>
+              <div class="v">epoch 2,847</div>
+              <div class="d">updated 6m ago · proof-of-innocence</div>
+            </div>
+          </div>
+
+          <div class="sec">
+            <h2>Your notes</h2>
+            <a class="link" data-view="notes">View all →</a>
+          </div>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Note</th>
+                <th>Created</th>
+                <th class="num">Amount</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="id">note_a1b2…e7</td>
+                <td class="muted">Jun 14, 09:21</td>
+                <td class="num amt">250.00</td>
+                <td><span class="tag pool">in pool</span></td>
+                <td class="num">
+                  <button class="btn sm" data-view="withdraw">Withdraw</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="id">note_c3d4…9f</td>
+                <td class="muted">Jun 13, 18:04</td>
+                <td class="num amt">1,000.00</td>
+                <td><span class="tag pool">in pool</span></td>
+                <td class="num">
+                  <button class="btn sm" data-view="withdraw">Withdraw</button>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="sec">
+            <h2>Recent activity</h2>
+            <a class="link" data-view="activity">View all →</a>
+          </div>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Counterparty</th>
+                <th class="num">Amount</th>
+                <th>Status</th>
+                <th>Time</th>
+                <th>Tx</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span class="typ out"><span class="ar">↑</span>Withdraw</span>
+                </td>
+                <td class="id">0x71C…fA09</td>
+                <td class="num amt">−100.00</td>
+                <td><span class="tag ok">confirmed</span></td>
+                <td class="muted">2h ago</td>
+                <td><a class="tx">0x4ad…12 ↗</a></td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="typ in"><span class="ar">↓</span>Deposit</span>
+                </td>
+                <td class="id">self</td>
+                <td class="num amt">+250.00</td>
+                <td><span class="tag ok">confirmed</span></td>
+                <td class="muted">Jun 14</td>
+                <td><a class="tx">0x9be…7c ↗</a></td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="typ in"><span class="ar">↓</span>Deposit</span>
+                </td>
+                <td class="id">self</td>
+                <td class="num amt">+1,000.00</td>
+                <td><span class="tag ok">confirmed</span></td>
+                <td class="muted">Jun 13</td>
+                <td><a class="tx">0x2f1…a0 ↗</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- DEPOSIT -->
+        <section class="view" id="deposit" hidden>
+          <div class="compose">
+            <div class="form">
+              <h3>Deposit USDG into the pool</h3>
+              <label class="lab">Amount</label>
+              <div class="field lg">
+                <input value="250.00" inputmode="decimal" /><span class="suffix"
+                  >USDG</span
+                >
+              </div>
+              <label class="lab">From wallet</label>
+              <div class="field">
+                <input
+                  class="mono"
+                  value="0x9f3a…2b · balance 8,400.00"
+                  readonly
+                  style="font-size: 13px"
+                />
+              </div>
+              <div class="hint">
+                <span>!</span
+                ><span
+                  >You'll receive a secret <b>note</b> (nullifier + secret).
+                  It's the only key to withdraw. Store it before you
+                  deposit.</span
+                >
+              </div>
+              <div style="margin-top: 16px; display: flex; gap: 10px">
+                <button class="btn pri">Sign &amp; deposit</button
+                ><button class="btn">Download note after</button>
+              </div>
+            </div>
+            <div class="summary">
+              <h3>SUMMARY</h3>
+              <div class="srow">
+                <span>Commitment</span><b>Poseidon(v,ℓ,·)</b>
+              </div>
+              <div class="srow">
+                <span>Joins anonymity set</span><b>1,284 → 1,285</b>
+              </div>
+              <div class="srow">
+                <span>Pool screening</span
+                ><b style="color: var(--pos)">passed</b>
+              </div>
+              <div class="srow">
+                <span>Network fee (est.)</span><b>~0.00021 ETH</b>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- WITHDRAW -->
+        <section class="view" id="withdraw" hidden>
+          <div class="compose">
+            <div class="form">
+              <h3>Withdraw to a fresh address</h3>
+              <label class="lab">Note</label>
+              <div class="field">
+                <input
+                  class="mono"
+                  value="note_c3d4…9f · 1,000.00 USDG"
+                  readonly
+                  style="font-size: 13px"
+                />
+              </div>
+              <label class="lab">Amount</label>
+              <div class="field lg">
+                <input value="400.00" inputmode="decimal" /><span class="suffix"
+                  >USDG</span
+                >
+              </div>
+              <label class="lab">Recipient (fresh address)</label>
+              <div class="field">
+                <input
+                  class="mono"
+                  value="0x71C…fA09"
+                  style="font-size: 14px"
+                />
+              </div>
+              <div class="proofline">
+                <span>proof</span><span class="bar"><i></i></span
+                ><span class="step" id="pstep">step 2/3 · proving</span>
+              </div>
+              <button class="btn pri">Generate proof &amp; withdraw</button>
+            </div>
+            <div class="summary">
+              <h3>SUMMARY</h3>
+              <div class="srow"><span>Withdraw</span><b>400.00 USDG</b></div>
+              <div class="srow"><span>Change note</span><b>600.00 USDG</b></div>
+              <div class="srow"><span>Nullifier spent</span><b>0x…e7</b></div>
+              <div class="srow"><span>State root</span><b>0x4f…a1</b></div>
+              <div class="srow">
+                <span>Sender ↔ recipient</span
+                ><b style="color: var(--pos)">unlinked</b>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- NOTES -->
+        <section class="view" id="notes" hidden>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Note</th>
+                <th>Created</th>
+                <th class="num">Amount</th>
+                <th>Status</th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td class="id">note_a1b2…e7</td>
+                <td class="muted">Jun 14, 09:21</td>
+                <td class="num amt">250.00</td>
+                <td><span class="tag pool">in pool</span></td>
+                <td class="num">
+                  <button class="btn sm" data-view="withdraw">Withdraw</button>
+                </td>
+              </tr>
+              <tr>
+                <td class="id">note_c3d4…9f</td>
+                <td class="muted">Jun 13, 18:04</td>
+                <td class="num amt">1,000.00</td>
+                <td><span class="tag pool">in pool</span></td>
+                <td class="num">
+                  <button class="btn sm" data-view="withdraw">Withdraw</button>
+                </td>
+              </tr>
+              <tr class="spent">
+                <td class="id">note_8a7b…02</td>
+                <td class="muted">Jun 11, 22:47</td>
+                <td class="num amt">500.00</td>
+                <td><span class="tag done">withdrawn</span></td>
+                <td class="num"><span class="rcpt">rcpt_4ad…12 ↓</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+
+        <!-- ACTIVITY -->
+        <section class="view" id="activity" hidden>
+          <table class="tbl">
+            <thead>
+              <tr>
+                <th>Type</th>
+                <th>Counterparty</th>
+                <th class="num">Amount</th>
+                <th>Status</th>
+                <th>Time</th>
+                <th>Tx</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>
+                  <span class="typ out"><span class="ar">↑</span>Withdraw</span>
+                </td>
+                <td class="id">0x71C…fA09</td>
+                <td class="num amt">−100.00</td>
+                <td><span class="tag ok">confirmed</span></td>
+                <td class="muted">Jun 15, 11:02</td>
+                <td><a class="tx">0x4ad…12 ↗</a></td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="typ in"><span class="ar">↓</span>Deposit</span>
+                </td>
+                <td class="id">self</td>
+                <td class="num amt">+250.00</td>
+                <td><span class="tag ok">confirmed</span></td>
+                <td class="muted">Jun 14, 09:21</td>
+                <td><a class="tx">0x9be…7c ↗</a></td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="typ out"><span class="ar">↑</span>Withdraw</span>
+                </td>
+                <td class="id">0x33a…01</td>
+                <td class="num amt">−500.00</td>
+                <td><span class="tag ok">confirmed</span></td>
+                <td class="muted">Jun 13, 20:15</td>
+                <td><a class="tx">0x77c…e9 ↗</a></td>
+              </tr>
+              <tr>
+                <td>
+                  <span class="typ in"><span class="ar">↓</span>Deposit</span>
+                </td>
+                <td class="id">self</td>
+                <td class="num amt">+1,000.00</td>
+                <td><span class="tag ok">confirmed</span></td>
+                <td class="muted">Jun 13, 18:04</td>
+                <td><a class="tx">0x2f1…a0 ↗</a></td>
+              </tr>
+            </tbody>
+          </table>
+        </section>
+      </div>
+    </div>
+
+    <script>
+      const titles = {
+        overview: ["Overview", ""],
+        deposit: ["Deposit", "· move funds"],
+        withdraw: ["Withdraw", "· move funds"],
+        notes: ["Notes", "· records"],
+        activity: ["Activity", "· records"],
+      };
+      function show(v) {
+        document
+          .querySelectorAll(".view")
+          .forEach((s) => (s.hidden = s.id !== v));
+        document
+          .querySelectorAll(".nav")
+          .forEach((n) => n.classList.toggle("active", n.dataset.view === v));
+        const t = titles[v] || [v, ""];
+        document.getElementById("ptitle").firstChild.textContent = t[0] + " ";
+        document.getElementById("pcrumb").textContent = t[1];
+        document.querySelectorAll("tr.spent").forEach((r) => {
+          r.classList.remove("reveal");
+          if (v === "notes") setTimeout(() => r.classList.add("reveal"), 80);
+        });
+        window.scrollTo(0, 0);
+      }
+      document.querySelectorAll("[data-view]").forEach((el) =>
+        el.addEventListener("click", (e) => {
+          e.preventDefault();
+          show(el.dataset.view);
+        })
+      );
+      // keyboard shortcuts (real-tool feel)
+      addEventListener("keydown", (e) => {
+        if (e.target.tagName === "INPUT") return;
+        const k = {
+          o: "overview",
+          d: "deposit",
+          w: "withdraw",
+          n: "notes",
+          a: "activity",
+        }[e.key.toLowerCase()];
+        if (k) show(k);
+      });
+      // cycle the zk proof step readout, real-computation feel, not a smooth sine
+      const _steps = [
+        "step 1/3 · witness",
+        "step 2/3 · proving",
+        "step 3/3 · verify",
+      ];
+      let _si = 1;
+      setInterval(() => {
+        const ps = document.getElementById("pstep");
+        if (ps) {
+          _si = (_si + 1) % _steps.length;
+          ps.textContent = _steps[_si];
+        }
+      }, 1100);
+    </script>
+  </body>
+</html>
