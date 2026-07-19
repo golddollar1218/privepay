@@ -29,7 +29,7 @@
           path: "/_next/image",
           loader: "default",
           dangerouslyAllowSVG: !1,
-          unoptimized: !1,
+          unoptimized: !0,
         };
       function h(e, t, r, n, i, o, a) {
         let l = null == e ? void 0 : e.src;
@@ -711,25 +711,12 @@
           localPatterns: void 0,
           remotePatterns: [],
           qualities: void 0,
-          unoptimized: !1,
+          unoptimized: !0,
         };
     },
     3431: (e, t) => {
       function r(e) {
-        var t;
-        let { config: r, src: n, width: i, quality: o } = e,
-          a =
-            o ||
-            (null == (t = r.qualities)
-              ? void 0
-              : t.reduce((e, t) =>
-                  Math.abs(t - 75) < Math.abs(e - 75) ? t : e
-                )) ||
-            75;
-        return (
-          r.path +
-          "?url=" +n
-        );
+        return e.src;
       }
       Object.defineProperty(t, "__esModule", { value: !0 }),
         Object.defineProperty(t, "default", {

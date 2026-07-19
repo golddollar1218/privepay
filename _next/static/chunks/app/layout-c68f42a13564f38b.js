@@ -224,6 +224,16 @@
                             })
                           : null,
                         (0, n.jsx)("li", {
+                          children: (0, n.jsx)("a", {
+                            className:
+                              "btn-sm bg-rh-green py-[5px] font-semibold text-ink shadow-[0_0_20px_-6px_rgba(223,255,0,0.7)] transition-colors hover:bg-rh-green-hover",
+                            href: "https://x.com/privepay_rh",
+                            target: "_blank",
+                            rel: "noopener noreferrer",
+                            children: "Follow on X",
+                          }),
+                        }),
+                        (0, n.jsx)("li", {
                           className: "md:hidden",
                           children: (0, n.jsx)("button", {
                             type: "button",
@@ -409,7 +419,7 @@
             path: "/_next/image",
             loader: "default",
             dangerouslyAllowSVG: !1,
-            unoptimized: !1,
+            unoptimized: !0,
           },
         });
         for (let [e, r] of Object.entries(t)) void 0 === r && delete t[e];
