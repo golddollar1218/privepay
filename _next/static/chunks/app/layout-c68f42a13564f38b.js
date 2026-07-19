@@ -17,7 +17,7 @@
         l = r(9087),
         o = r(5491);
       let d =
-          "https://ponsfamily.com/launchpad/0x9a347d2c997d6d046a6118a2e8d05ab9b3fa498f",
+          "https://app.uniswap.org/swap?chain=robinhood&inputCurrency=NATIVE&outputCurrency=0x95065121762ae01248a55cb08eeeed24960e42d6",
         c = [
           { href: "/docs", label: "Introduction", hint: "What Priv\xe9 is" },
           {
@@ -201,7 +201,7 @@
                         (0, n.jsx)("li", {
                           className: "hidden sm:block",
                           children: (0, n.jsx)("a", {
-                            href: "https://x.com/privepayapp",
+                            href: "https://x.com/privepay_rh",
                             target: "_blank",
                             rel: "noopener noreferrer",
                             "aria-label": "Priv\xe9 on X",
@@ -223,14 +223,6 @@
                               }),
                             })
                           : null,
-                        (0, n.jsx)("li", {
-                          children: (0, n.jsx)(i(), {
-                            href: (0, o.R)(),
-                            className:
-                              "btn-sm bg-rh-green py-[5px] font-semibold text-ink shadow-[0_0_20px_-6px_rgba(223,255,0,0.7)] transition-colors hover:bg-rh-green-hover",
-                            children: "Open the app",
-                          }),
-                        }),
                         (0, n.jsx)("li", {
                           className: "md:hidden",
                           children: (0, n.jsx)("button", {
@@ -336,7 +328,7 @@
                           )
                         ),
                         (0, n.jsxs)("a", {
-                          href: "https://x.com/privepayapp",
+                          href: "https://x.com/privepay_rh",
                           target: "_blank",
                           rel: "noopener noreferrer",
                           className:
@@ -386,7 +378,7 @@
     5491: (e, t, r) => {
       "use strict";
       function n() {
-        return "https://app.privepay.app";
+        return "";
       }
       r.d(t, { R: () => n });
     },

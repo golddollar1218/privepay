@@ -312,7 +312,7 @@
     5491: (e, t, n) => {
       "use strict";
       function i() {
-        return "https://app.privepay.app";
+        return "";
       }
       n.d(t, { R: () => i });
     },

@@ -728,15 +728,7 @@
             75;
         return (
           r.path +
-          "?url=" +
-          encodeURIComponent(n) +
-          "&w=" +
-          i +
-          "&q=" +
-          a +
-          (n.startsWith("/_next/static/media/")
-            ? "&dpl=dpl_FEVBK7wiTJwCc8p5UtqSNQPDiqBx"
-            : "")
+          "?url=" +n
         );
       }
       Object.defineProperty(t, "__esModule", { value: !0 }),
