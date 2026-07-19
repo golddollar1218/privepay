@@ -115,6 +115,11 @@
                           className: h,
                           children: "Compliance",
                         }),
+                        (0, n.jsx)(i(), {
+                          href: "/docs",
+                          className: h,
+                          children: "Docs",
+                        }),
                       ],
                     }),
                     (0, n.jsxs)("ul", {
@@ -215,6 +220,13 @@
                           className:
                             "block rounded-lg px-2 py-2 text-sm text-fg-muted transition hover:bg-ink-3 hover:text-fg",
                           children: "Compliance",
+                        }),
+                        (0, n.jsx)(i(), {
+                          href: "/docs",
+                          onClick: () => a(!1),
+                          className:
+                            "block rounded-lg px-2 py-2 text-sm text-fg-muted transition hover:bg-ink-3 hover:text-fg",
+                          children: "Docs",
                         }),
                         d
                           ? (0, n.jsx)("a", {
